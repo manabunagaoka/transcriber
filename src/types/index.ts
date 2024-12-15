@@ -1,11 +1,9 @@
-export interface TranscriptionSegment {
-  text: string;
-  timestamp: number;
-}
+type AudioFormat = 'wav' | 'mp3';  // WAV is more reliable
+type VideoFormat = 'webm' | 'mp4';
 
-interface RecordingOptions {
-  videoQuality: 'high' | 'medium' | 'low'
-  format: 'webm' | 'mp4'
-  withAudio: boolean
-  audioFormat: 'mp3' | 'wav'
+export interface RecordingOptions {
+  videoQuality: 'high' | 'medium' | 'low';
+  format: VideoFormat;
+  withAudio: boolean;
+  audioFormat: AudioFormat;
 }
