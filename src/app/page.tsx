@@ -100,10 +100,10 @@ export default function TranscriberPage() {
   const recordedChunksRef = useRef<Blob[]>([]);
   const saveOptionsRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timer>();
-  const memoryCheckerRef = useRef<NodeJS.Timer>();
-  const autoSaveRef = useRef<NodeJS.Timer>();
-  const chunkIntervalRef = useRef<NodeJS.Timer>();
+  const timerRef = useRef<ReturnType<typeof setInterval>>();
+  const memoryCheckerRef = useRef<ReturnType<typeof setInterval>>();
+  const autoSaveRef = useRef<ReturnType<typeof setInterval>>();
+  const chunkIntervalRef = useRef<ReturnType<typeof setInterval>>();
 
 // PART 3: FUNCTIONS AND HANDLERS
   // Memory usage monitoring

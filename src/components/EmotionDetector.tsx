@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+// src/components/EmotionDetector.tsx
 interface EmotionDetectorProps {
   videoRef: React.RefObject<HTMLVideoElement>;
-  onEmotionDetected?: (emotion: string) => void;
+  onEmotionDetected: (emotion: string) => void;
 }
 
 const EmotionDetector: React.FC<EmotionDetectorProps> = ({ videoRef, onEmotionDetected }) => {
