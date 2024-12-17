@@ -1,4 +1,3 @@
-// PART 1: IMPORTS AND TYPES
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
@@ -38,7 +37,6 @@ const AUTO_SAVE_INTERVAL = 10 * 60 * 1000; // 10 minutes
 const MEMORY_WARNING_THRESHOLD = 0.8;
 const MAX_RECORDING_TIME = 4 * 60 * 60 * 1000; // 4 hours
 
-// Helper functions
 const formatTime = (ms: number) => {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / 1000 / 60) % 60);
@@ -46,7 +44,6 @@ const formatTime = (ms: number) => {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-// AudioWaveform Component
 const AudioWaveform = () => {
   return (
     <div className="flex items-center justify-center space-x-1">
@@ -64,7 +61,6 @@ const AudioWaveform = () => {
   );
 };
 
-// PART 2: COMPONENT STATE AND REFS
 export default function TranscriberPage() {
   // States
   const [isRecording, setIsRecording] = useState(false);
@@ -105,7 +101,6 @@ export default function TranscriberPage() {
   const autoSaveRef = useRef<ReturnType<typeof setInterval>>();
   const chunkIntervalRef = useRef<ReturnType<typeof setInterval>>();
 
-// PART 3: FUNCTIONS AND HANDLERS
   // Memory usage monitoring
   const checkMemoryUsage = async () => {
     if ('performance' in window && 'memory' in performance) {
@@ -151,7 +146,6 @@ export default function TranscriberPage() {
     }
   };
 
-  // Handler functions
   const handleRefresh = () => {
     if (hasUnsavedContent) {
       const confirmReset = window.confirm('You have unsaved content. Are you sure you want to refresh?');
@@ -246,7 +240,6 @@ export default function TranscriberPage() {
     URL.revokeObjectURL(url);
   };
 
-  // Media constraints helper
   const getMediaConstraints = () => {
     const constraints: MediaStreamConstraints = {
       audio: recordingOptions.withAudio
@@ -346,7 +339,6 @@ export default function TranscriberPage() {
     setRecordingTime(0);
   };
 
-  // Effects
   useEffect(() => {
     if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -378,10 +370,6 @@ export default function TranscriberPage() {
             updated[lastIndex] = {
               ...updated[lastIndex],
               text: updated[lastIndex].text + ' ' + result[0].transcript
-
-              // PART 3 (CONTINUED): Functions and Effects
-
-            // Continuing from the transcription effect...
             };
             return updated;
           });
@@ -425,7 +413,6 @@ export default function TranscriberPage() {
     };
   }, []);
 
-// PART 4: JSX/UI COMPONENT
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">
       <div className="p-4">
@@ -613,15 +600,57 @@ export default function TranscriberPage() {
               )}
             </div>
 
-            {/* Save and Refresh buttons */}
-            <button 
-              onClick={() => setShowSaveOptions(!showSaveOptions)}
-              className="p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
-              title="Save Options"
-            >
-              <Save size={24} className="text-white" />
-            </button>
+            {/* Save Button */}
+            <div className="relative" ref={saveOptionsRef}>
+              <button 
+                onClick={() => setShowSaveOptions(!showSaveOptions)}
+                className="p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                title="Save Options"
+              >
+                <Save size={24} className="text-white" />
+              </button>
+              
+              {showSaveOptions && (
+                <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-2 z-50">
+                  <button
+                    onClick={async () => {
+                      await downloadAll();
+                      setShowSaveOptions(false);
+                    }}
+                    className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
+                  >
+                    <Download size={20} />
+                    <span>Save All</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      downloadTranscription();
+                      setShowSaveOptions(false);
+                    }}
+                    className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
+                  >
+                    <FileText size={20} />
+                    <span>Save Text</span>
+                  </button>
+                  
+                  {recordedChunksRef.current.length > 0 && (
+                    <button
+                      onClick={() => {
+                        downloadRecording();
+                        setShowSaveOptions(false);
+                      }}
+                      className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      {mode === 'video' ? <Video size={20} /> : <Mic size={20} />}
+                      <span>Save {mode === 'video' ? 'Video' : 'Audio'}</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
 
+            {/* Refresh button */}
             <button 
               onClick={handleRefresh}
               className="p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
@@ -699,49 +728,6 @@ export default function TranscriberPage() {
             )}
           </div>
         </div>
-
-        {/* Save Options Dropdown */}
-        {showSaveOptions && (
-          <div 
-            ref={saveOptionsRef}
-            className="absolute right-4 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg py-2 z-50"
-          >
-            <button
-              onClick={async () => {
-                await downloadAll();
-                setShowSaveOptions(false);
-              }}
-              className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
-            >
-              <Download size={20} />
-              <span>Save All</span>
-            </button>
-            
-            <button
-              onClick={() => {
-                downloadTranscription();
-                setShowSaveOptions(false);
-              }}
-              className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
-            >
-              <FileText size={20} />
-              <span>Save Text</span>
-            </button>
-            
-            {recordedChunksRef.current.length > 0 && (
-              <button
-                onClick={() => {
-                  downloadRecording();
-                  setShowSaveOptions(false);
-                }}
-                className="w-full px-4 py-2 hover:bg-gray-700 flex items-center space-x-2"
-              >
-                {mode === 'video' ? <Video size={20} /> : <Mic size={20} />}
-                <span>Save {mode === 'video' ? 'Video' : 'Audio'}</span>
-              </button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
