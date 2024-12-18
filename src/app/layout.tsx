@@ -1,4 +1,3 @@
-cat > src/app/layout.tsx << 'EOL'
 // src/app/layout.tsx
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -29,4 +28,3 @@ export default function RootLayout({
     </html>
   )
 }
-EOL
