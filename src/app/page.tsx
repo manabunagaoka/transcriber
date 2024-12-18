@@ -354,13 +354,6 @@ export default function TranscriberPage() {
     }
   }, []);
 
-  // Memory usage monitoring
-  const checkMemoryUsage = async () => {
-    // ... existing code ...
-  };
-
-  // ... rest of your component code ...
-  
   useEffect(() => {
     if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
