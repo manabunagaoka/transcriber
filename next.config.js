@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
-// Force clean build - v1
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,  // Change this to false
   output: 'standalone',
   headers: async () => {
     return [
