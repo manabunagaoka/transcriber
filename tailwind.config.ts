@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -14,5 +14,21 @@ export default {
       },
     },
   },
+  safelist: [
+    'bg-gray-900',
+    'text-gray-100',
+    'bg-gray-800',
+    'p-4',
+    'shadow-lg',
+    'z-50',
+    'text-2xl',
+    'font-bold',
+    'text-center',
+    'text-white',
+    'pt-16',
+    // Add any other Tailwind classes you're using
+  ],
   plugins: [],
-} satisfies Config;
+};
+
+export default config;
