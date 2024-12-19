@@ -10,7 +10,15 @@ const nextConfig = {
         headers: [
           {
             key: 'Permissions-Policy',
-            value: 'microphone=*, camera=*'
+            value: 'microphone=*, camera=*, display-capture=*'
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin'
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'require-corp'
           }
         ],
       },
