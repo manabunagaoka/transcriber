@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Ensure static optimization is enabled
-  reactStrictMode: true,
-  // Add output configuration for better static optimization
   output: 'standalone',
+  reactStrictMode: true,
+  // Remove the experimental section since it's causing issues
+  // experimental: {
+  //   optimizeCss: true,
+  // },
 }
 
 module.exports = nextConfig
