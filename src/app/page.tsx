@@ -339,21 +339,6 @@ export default function TranscriberPage() {
     setRecordingTime(0);
   };
 
-  // Add the new useEffect right HERE, before the other useEffects
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (!window.isSecureContext) {
-        console.error('Application requires secure context (HTTPS)');
-        alert('This application requires a secure context (HTTPS) to access media devices.');
-      }
-      
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.error('Media Devices API not supported');
-        alert('Your browser does not support media devices API');
-      }
-    }
-  }, []);
-
   useEffect(() => {
     if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
